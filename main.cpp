@@ -211,17 +211,38 @@ int main()
   GLuint image;
   glGenTextures(1, &image);
   glBindTexture(GL_TEXTURE_RECTANGLE, image);
-  glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, capture_width, capture_height, 0, GL_BGR, GL_UNSIGNED_BYTE, NULL);
+  glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGB, capture_width, capture_height, 0, GL_BGR, GL_UNSIGNED_BYTE, NULL);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
+  // ワーピング用テクスチャを準備する
+  std::vector<GLfloat> map;
+  for (int i = 0; i < capture_width * capture_height; ++i)
+  {
+    GLfloat x = i % capture_width;
+    GLfloat y = i / capture_width;
+    //GLfloat x = GLfloat((i % capture_width) * 2 - capture_width) / GLfloat(capture_width);
+    //GLfloat y = GLfloat((i / capture_width) * 2 - capture_height) / GLfloat(capture_width);
+    map.push_back(x + 100.0f * cos(20.0f * y / GLfloat(capture_height)));
+    map.push_back(y);
+  }
+  GLuint warp;
+  glGenTextures(1, &warp);
+  glBindTexture(GL_TEXTURE_RECTANGLE, warp);
+  glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RG32F, capture_width, capture_height, 0, GL_RG, GL_FLOAT, &map[0]);
+  glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+  glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+  
   // プログラムオブジェクトの作成
   const GLuint program(ggLoadShader("simple.vert", "simple.frag"));
 
   // uniform 変数のインデックスの検索（見つからなければ -1）
   const GLuint imageLoc(glGetUniformLocation(program, "image"));
+  const GLuint warpLoc(glGetUniformLocation(program, "warp"));
   
   // ウィンドウが開いている間繰り返す
   while (window.shouldClose() == GL_FALSE)
@@ -245,10 +266,13 @@ int main()
     
     // uniform サンプラの指定
     glUniform1i(imageLoc, 0);
+    glUniform1i(warpLoc, 1);
     
     // テクスチャユニットとテクスチャの指定
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_RECTANGLE, image);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_RECTANGLE, warp);
     
     // 描画に使う頂点配列オブジェクトの指定
     glBindVertexArray(vao);
