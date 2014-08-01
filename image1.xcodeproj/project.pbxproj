@@ -39,7 +39,6 @@
 		7D1E90D81123E2F7005E6C75 = {
 			isa = PBXGroup;
 			children = (
-				7D6ED26D198BCE6D005F0A83 /* warp.frag */,
 				7D1E90EF1123E36C005E6C75 /* Products */,
 				7D1E90F11123E36C005E6C75 /* Info.plist */,
 				7D7AF85E1222C8CC003A0434 /* opengl.icns */,
@@ -47,6 +46,7 @@
 				7D5474A0198A3F5B00E4730D /* gg.h */,
 				7D54749F198A3F5B00E4730D /* gg.cpp */,
 				7D5474A5198A3F7500E4730D /* simple.vert */,
+				7D6ED26D198BCE6D005F0A83 /* warp.frag */,
 			);
 			sourceTree = "<group>";
 		};
