@@ -12,90 +12,90 @@
 #  pragma comment(lib, "opencv_highgui" CV_VERSION_STR CV_EXT_STR)
 #endif
 
-// •â•ƒvƒƒOƒ‰ƒ€
+// è£œåŠ©ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 #include "gg.h"
 using namespace gg;
 
 //
-// ƒEƒBƒ“ƒhƒEŠÖ˜A‚Ìˆ—
+// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦é–¢é€£ã®å‡¦ç†
 //
 class Window
 {
-  // ƒEƒBƒ“ƒhƒE‚Ì¯•Êq
+  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è­˜åˆ¥å­
   GLFWwindow *const window;
 
-  // “§‹“Š‰e•ÏŠ·s—ñ
+  // é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—
   GgMatrix mp;
   
-  // ƒ^ƒCƒv‚µ‚½ƒL[
+  // ã‚¿ã‚¤ãƒ—ã—ãŸã‚­ãƒ¼
   int key;
   
 public:
 
-  // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+  // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
   Window(const char *title = "Game Graphics", int width = 640, int height = 480)
     : window(glfwCreateWindow(width, height, title, NULL, NULL)), key(0)
   {
     if (window == NULL)
     {
-      // ƒEƒBƒ“ƒhƒE‚ªì¬‚Å‚«‚È‚©‚Á‚½
+      // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒä½œæˆã§ããªã‹ã£ãŸ
       std::cerr << "Can't create GLFW window." << std::endl;
       exit(1);
     }
 
-    // Œ»İ‚ÌƒEƒBƒ“ƒhƒE‚ğˆ—‘ÎÛ‚É‚·‚é
+    // ç¾åœ¨ã®ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’å‡¦ç†å¯¾è±¡ã«ã™ã‚‹
     glfwMakeContextCurrent(window);
 
-    // ì¬‚µ‚½ƒEƒBƒ“ƒhƒE‚É‘Î‚·‚éİ’è
+    // ä½œæˆã—ãŸã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã«å¯¾ã™ã‚‹è¨­å®š
     glfwSwapInterval(1);
 
-    // ƒQ[ƒ€ƒOƒ‰ƒtƒBƒbƒNƒX“Á˜_‚Ì“s‡‚É‚à‚Æ‚Ã‚­‰Šú‰»
+    // ã‚²ãƒ¼ãƒ ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ç‰¹è«–ã®éƒ½åˆã«ã‚‚ã¨ã¥ãåˆæœŸåŒ–
     ggInit();
 
-    // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ‹L˜^‚µ‚Ä‚¨‚­
+    // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’è¨˜éŒ²ã—ã¦ãŠã
     glfwSetWindowUserPointer(window, this);
 
-    // ƒL[ƒ{[ƒh‘€ì‚ÉŒÄ‚Ño‚·ˆ—‚Ì“o˜^
+    // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ“ä½œæ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†ã®ç™»éŒ²
     glfwSetKeyCallback(window, keyboard);
     
-    // ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY•ÏX‚ÉŒÄ‚Ño‚·ˆ—‚ğ“o˜^‚·‚é
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã«å‘¼ã³å‡ºã™å‡¦ç†ã‚’ç™»éŒ²ã™ã‚‹
     glfwSetFramebufferSizeCallback(window, resize);
     
-    // ƒEƒBƒ“ƒhƒE‚Ìİ’è‚ğ‰Šú‰»‚·‚é
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¨­å®šã‚’åˆæœŸåŒ–ã™ã‚‹
     resize(window, width, height);
   }
 
-  // ƒfƒXƒgƒ‰ƒNƒ^
+  // ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
   virtual ~Window()
   {
     glfwDestroyWindow(window);
   }
 
-  // ƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é‚×‚«‚©‚ğ”»’è‚·‚é
+  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã¹ãã‹ã‚’åˆ¤å®šã™ã‚‹
   int shouldClose() const
   {
     return glfwWindowShouldClose(window) | glfwGetKey(window, GLFW_KEY_ESCAPE);
   }
 
-  // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚ÄƒCƒxƒ“ƒg‚ğæ‚èo‚·
+  // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
   void swapBuffers()
   {
-    // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚é
+    // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã‚‹
     glfwSwapBuffers(window);
 
-    // OpenGL ‚ÌƒGƒ‰[‚ğƒ`ƒFƒbƒN‚·‚é
+    // OpenGL ã®ã‚¨ãƒ©ãƒ¼ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
     ggError("SwapBuffers");
 
-    // ƒCƒxƒ“ƒg‚ğæ‚èo‚·
+    // ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
     glfwPollEvents();
   }
 
-  // ƒL[ƒ{[ƒh‘€ì‚Ìˆ—
+  // ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æ“ä½œæ™‚ã®å‡¦ç†
   static void keyboard(GLFWwindow *window, int key, int scancode, int action, int mods)
   {
     if (action == GLFW_PRESS)
     {
-      // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ“¾‚é
+      // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’å¾—ã‚‹
       Window *const instance(static_cast<Window *>(glfwGetWindowUserPointer(window)));
       
       if (instance != NULL)
@@ -105,29 +105,29 @@ public:
     }
   }
   
-  // ƒEƒBƒ“ƒhƒE‚ÌƒTƒCƒY•ÏX‚Ìˆ—
+  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºå¤‰æ›´æ™‚ã®å‡¦ç†
   static void resize(GLFWwindow *window, int width, int height)
   {
-    // ƒEƒBƒ“ƒhƒE‘S‘Ì‚ğƒrƒ…[ƒ|[ƒg‚É‚·‚é
+    // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å…¨ä½“ã‚’ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã«ã™ã‚‹
     glViewport(0, 0, width, height);
     
-    // ‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ì this ƒ|ƒCƒ“ƒ^‚ğ“¾‚é
+    // ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã® this ãƒã‚¤ãƒ³ã‚¿ã‚’å¾—ã‚‹
     Window *const instance(static_cast<Window *>(glfwGetWindowUserPointer(window)));
     
     if (instance != NULL)
     {
-      // “§‹“Š‰e•ÏŠ·s—ñ‚ğ‹‚ß‚éiƒAƒXƒyƒNƒg”ä w / hj
+      // é€è¦–æŠ•å½±å¤‰æ›è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹ï¼ˆã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯” w / hï¼‰
       instance->mp.loadPerspective(0.5f, (float)width / (float)height, 1.0f, 20.0f);
     }
   }
   
-  // “Š‰e•ÏŠ·s—ñ‚ğæ‚èo‚·
+  // æŠ•å½±å¤‰æ›è¡Œåˆ—ã‚’å–ã‚Šå‡ºã™
   const GgMatrix &getMp() const
   {
     return mp;
   }
   
-  // ƒL[‚ğæ‚èo‚·
+  // ã‚­ãƒ¼ã‚’å–ã‚Šå‡ºã™
   int getKey() const
   {
     return key;
@@ -135,66 +135,66 @@ public:
 };
 
 //
-// ƒvƒƒOƒ‰ƒ€I—¹‚Ìˆ—
+// ãƒ—ãƒ­ã‚°ãƒ©ãƒ çµ‚äº†æ™‚ã®å‡¦ç†
 //
 static void cleanup()
 {
-  // GLFW ‚ÌI—¹ˆ—
+  // GLFW ã®çµ‚äº†å‡¦ç†
   glfwTerminate();
 }
 
 //
-// ƒƒCƒ“ƒvƒƒOƒ‰ƒ€
+// ãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 //
 int main()
 {
-  // OpenCV ‚É‚æ‚éƒrƒfƒIƒLƒƒƒvƒ`ƒƒ‚ğ‰Šú‰»‚·‚é
-  cv::VideoCapture camera(1);
+  // OpenCV ã«ã‚ˆã‚‹ãƒ“ãƒ‡ã‚ªã‚­ãƒ£ãƒ—ãƒãƒ£ã‚’åˆæœŸåŒ–ã™ã‚‹
+  cv::VideoCapture camera(CV_CAP_ANY);
   if (!camera.isOpened())
   {
     std::cerr << "cannot open input" << std::endl;
     exit(1);
   }
   
-  // ƒJƒƒ‰‚Ì‰Šúİ’è
+  // ã‚«ãƒ¡ãƒ©ã®åˆæœŸè¨­å®š
   camera.grab();
   const GLsizei capture_width(GLsizei(camera.get(CV_CAP_PROP_FRAME_WIDTH)));
   const GLsizei capture_height(GLsizei(camera.get(CV_CAP_PROP_FRAME_HEIGHT)));
   
-  // GLFW ‚ğ‰Šú‰»‚·‚é
+  // GLFW ã‚’åˆæœŸåŒ–ã™ã‚‹
   if (glfwInit() == GL_FALSE)
   {
-    // ‰Šú‰»‚É¸”s‚µ‚½
+    // åˆæœŸåŒ–ã«å¤±æ•—ã—ãŸ
     std::cerr << "Can't initialize GLFW" << std::endl;
     return 1;
   }
 
-  // ƒvƒƒOƒ‰ƒ€I—¹‚Ìˆ—‚ğ“o˜^‚·‚é
+  // ãƒ—ãƒ­ã‚°ãƒ©ãƒ çµ‚äº†æ™‚ã®å‡¦ç†ã‚’ç™»éŒ²ã™ã‚‹
   atexit(cleanup);
 
-  // OpenGL Version 3.3 Core Profile ‚ğ‘I‘ğ‚·‚é
+  // OpenGL Version 3.3 Core Profile ã‚’é¸æŠã™ã‚‹
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  // ƒEƒBƒ“ƒhƒE‚ğì¬‚·‚é
+  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã™ã‚‹
   Window window("Image Processing Sample", capture_width, capture_height);
 
-  // ”wŒiF‚ğw’è‚·‚é
+  // èƒŒæ™¯è‰²ã‚’æŒ‡å®šã™ã‚‹
   glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
   
-  // ’¸“_”z—ñƒIƒuƒWƒFƒNƒg
+  // é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
   GLuint vao;
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
   
-  // ’¸“_ƒoƒbƒtƒ@ƒIƒuƒWƒFƒNƒg
+  // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
   GLuint vbo;
   glGenBuffers(1, &vbo);
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
   
-  // }Œ`‚Ì“Ç‚İ‚İ
+  // å›³å½¢ã®èª­ã¿è¾¼ã¿
   static const GLfloat position[][2] =
   {
     { -1.0f, -1.0f },
@@ -207,7 +207,7 @@ int main()
   glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
   glEnableVertexAttribArray(0);
   
-  // ƒeƒNƒXƒ`ƒƒ‚ğ€”õ‚·‚é
+  // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æº–å‚™ã™ã‚‹
   GLuint image;
   glGenTextures(1, &image);
   glBindTexture(GL_TEXTURE_RECTANGLE, image);
@@ -217,7 +217,7 @@ int main()
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-  // ƒ[ƒsƒ“ƒO—pƒf[ƒ^‚ğ€”õ‚·‚é
+  // ãƒ¯ãƒ¼ãƒ”ãƒ³ã‚°ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’æº–å‚™ã™ã‚‹
   const GLfloat cx = GLfloat(capture_width / 2);
   const GLfloat cy = GLfloat(capture_height / 2);
   const GLfloat k[] = { 1.0f, 0.18f, 0.115f };
@@ -235,7 +235,7 @@ int main()
     map.push_back(y * t + cy);
   }
 
-  // ƒ[ƒsƒ“ƒO—pƒf[ƒ^‚ğƒeƒNƒXƒ`ƒƒƒƒ‚ƒŠ‚É“]‘—‚·‚é
+  // ãƒ¯ãƒ¼ãƒ”ãƒ³ã‚°ç”¨ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¡ãƒ¢ãƒªã«è»¢é€ã™ã‚‹
   GLuint warp;
   glGenTextures(1, &warp);
   glBindTexture(GL_TEXTURE_RECTANGLE, warp);
@@ -245,56 +245,56 @@ int main()
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
   
-  // ƒvƒƒOƒ‰ƒ€ƒIƒuƒWƒFƒNƒg‚Ìì¬
+  // ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
   const GLuint program(ggLoadShader("simple.vert", "warp.frag"));
 
-  // uniform •Ï”‚ÌƒCƒ“ƒfƒbƒNƒX‚ÌŒŸõiŒ©‚Â‚©‚ç‚È‚¯‚ê‚Î -1j
+  // uniform å¤‰æ•°ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ¤œç´¢ï¼ˆè¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã° -1ï¼‰
   const GLuint imageLoc(glGetUniformLocation(program, "image"));
   const GLuint warpLoc(glGetUniformLocation(program, "warp"));
   
-  // ƒEƒBƒ“ƒhƒE‚ªŠJ‚¢‚Ä‚¢‚éŠÔŒJ‚è•Ô‚·
+  // ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãŒé–‹ã„ã¦ã„ã‚‹é–“ç¹°ã‚Šè¿”ã™
   while (window.shouldClose() == GL_FALSE)
   {
     glBindTexture(GL_TEXTURE_RECTANGLE, image);
 
     if (camera.grab())
     {
-      // ƒLƒƒƒvƒ`ƒƒ‰f‘œ‚©‚ç‰æ‘œ‚ğØ‚èo‚·
+      // ã‚­ãƒ£ãƒ—ãƒãƒ£æ˜ åƒã‹ã‚‰ç”»åƒã‚’åˆ‡ã‚Šå‡ºã™
       cv::Mat frame;
       camera.retrieve(frame, 3);
 
-      // Ø‚èo‚µ‚½‰æ‘œ‚ğƒeƒNƒXƒ`ƒƒ‚É“]‘—‚·‚é
+      // åˆ‡ã‚Šå‡ºã—ãŸç”»åƒã‚’ãƒ†ã‚¯ã‚¹ãƒãƒ£ã«è»¢é€ã™ã‚‹
       cv::Mat flipped;
       cv::flip(frame, flipped, 0);
       glTexSubImage2D(GL_TEXTURE_RECTANGLE, 0, 0, 0, frame.cols, flipped.rows, GL_BGR, GL_UNSIGNED_BYTE, flipped.data);
     }
 
-    // ƒVƒF[ƒ_ƒvƒƒOƒ‰ƒ€‚Ìg—pŠJn
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½¿ç”¨é–‹å§‹
     glUseProgram(program);
     
-    // uniform ƒTƒ“ƒvƒ‰‚Ìw’è
+    // uniform ã‚µãƒ³ãƒ—ãƒ©ã®æŒ‡å®š
     glUniform1i(imageLoc, 0);
     glUniform1i(warpLoc, 1);
     
-    // ƒeƒNƒXƒ`ƒƒƒ†ƒjƒbƒg‚ÆƒeƒNƒXƒ`ƒƒ‚Ìw’è
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¦ãƒ‹ãƒƒãƒˆã¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æŒ‡å®š
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_RECTANGLE, image);
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_RECTANGLE, warp);
     
-    // •`‰æ‚Ég‚¤’¸“_”z—ñƒIƒuƒWƒFƒNƒg‚Ìw’è
+    // æç”»ã«ä½¿ã†é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŒ‡å®š
     glBindVertexArray(vao);
     
-    // }Œ`‚Ì•`‰æ
+    // å›³å½¢ã®æç”»
     glDrawArrays(GL_TRIANGLE_FAN, 0, vertices);
     
-    // ’¸“_”z—ñƒIƒuƒWƒFƒNƒg‚Ìw’è‰ğœ
+    // é ‚ç‚¹é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŒ‡å®šè§£é™¤
     glBindVertexArray(0);
     
-    // ƒVƒF[ƒ_ƒvƒƒOƒ‰ƒ€‚Ìg—pI—¹
+    // ã‚·ã‚§ãƒ¼ãƒ€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä½¿ç”¨çµ‚äº†
     glUseProgram(0);
 
-    // ƒJƒ‰[ƒoƒbƒtƒ@‚ğ“ü‚ê‘Ö‚¦‚ÄƒCƒxƒ“ƒg‚ğæ‚èo‚·
+    // ã‚«ãƒ©ãƒ¼ãƒãƒƒãƒ•ã‚¡ã‚’å…¥ã‚Œæ›¿ãˆã¦ã‚¤ãƒ™ãƒ³ãƒˆã‚’å–ã‚Šå‡ºã™
     window.swapBuffers();
   }
 }
