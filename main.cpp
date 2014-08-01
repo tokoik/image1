@@ -149,7 +149,7 @@ static void cleanup()
 int main()
 {
   // OpenCV によるビデオキャプチャを初期化する
-  cv::VideoCapture camera(CV_CAP_ANY);
+  cv::VideoCapture camera(1);
   if (!camera.isOpened())
   {
     std::cerr << "cannot open input" << std::endl;
@@ -217,17 +217,25 @@ int main()
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-  // ワーピング用テクスチャを準備する
+  // ワーピング用データを準備する
+  const GLfloat cx = GLfloat(capture_width / 2);
+  const GLfloat cy = GLfloat(capture_height / 2);
+  const GLfloat k[] = { 1.0f, 0.18f, 0.115f };
   std::vector<GLfloat> map;
   for (int i = 0; i < capture_width * capture_height; ++i)
   {
-    GLfloat x = i % capture_width;
-    GLfloat y = i / capture_width;
-    //GLfloat x = GLfloat((i % capture_width) * 2 - capture_width) / GLfloat(capture_width);
-    //GLfloat y = GLfloat((i / capture_width) * 2 - capture_height) / GLfloat(capture_width);
-    map.push_back(x + 100.0f * cos(20.0f * y / GLfloat(capture_height)));
-    map.push_back(y);
+    GLfloat x = GLfloat(i % capture_width) - cx;
+    GLfloat y = GLfloat(i / capture_width) - cy;
+    GLfloat dx = x / cx;
+    GLfloat dy = y / cx;
+    GLfloat d2 = dx * dx + dy * dy;
+    GLfloat d4 = d2 * d2;
+    GLfloat t = k[0] + k[1] * d2 + k[2] * d4;
+    map.push_back(x * t + cx);
+    map.push_back(y * t + cy);
   }
+
+  // ワーピング用データをテクスチャメモリに転送する
   GLuint warp;
   glGenTextures(1, &warp);
   glBindTexture(GL_TEXTURE_RECTANGLE, warp);
@@ -238,7 +246,7 @@ int main()
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
   
   // プログラムオブジェクトの作成
-  const GLuint program(ggLoadShader("simple.vert", "simple.frag"));
+  const GLuint program(ggLoadShader("simple.vert", "warp.frag"));
 
   // uniform 変数のインデックスの検索（見つからなければ -1）
   const GLuint imageLoc(glGetUniformLocation(program, "image"));
