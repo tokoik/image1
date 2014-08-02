@@ -218,19 +218,19 @@ int main()
   glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
   // ワーピング用データを準備する
-  const GLfloat cx = GLfloat(capture_width / 2);
-  const GLfloat cy = GLfloat(capture_height / 2);
-  const GLfloat k[] = { 1.0f, 0.18f, 0.115f };
+  const GLfloat cx(GLfloat(capture_width / 2));
+  const GLfloat cy(GLfloat(capture_height / 2));
+  static const GLfloat k[] = { 1.0f, 0.18f, 0.115f };
   std::vector<GLfloat> map;
   for (int i = 0; i < capture_width * capture_height; ++i)
   {
-    GLfloat x = GLfloat(i % capture_width) - cx;
-    GLfloat y = GLfloat(i / capture_width) - cy;
-    GLfloat dx = x / cx;
-    GLfloat dy = y / cx;
-    GLfloat d2 = dx * dx + dy * dy;
-    GLfloat d4 = d2 * d2;
-    GLfloat t = k[0] + k[1] * d2 + k[2] * d4;
+    const GLfloat x(GLfloat(i % capture_width) - cx);
+    const GLfloat y(GLfloat(i / capture_width) - cy);
+    const GLfloat dx(x / cx);
+    const GLfloat dy(y / cx);
+    const GLfloat d2(dx * dx + dy * dy);
+    const GLfloat d4(d2 * d2);
+    const GLfloat t(k[0] + k[1] * d2 + k[2] * d4);
     map.push_back(x * t + cx);
     map.push_back(y * t + cy);
   }
