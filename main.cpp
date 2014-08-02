@@ -132,6 +132,12 @@ public:
   {
     return key;
   }
+
+  // キーの状態を調べる
+  int testKey(int key) const
+  {
+    return glfwGetKey(window, key);
+  }
 };
 
 //
