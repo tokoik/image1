@@ -232,8 +232,8 @@ int main()
   {
     const GLfloat x(GLfloat(i % capture_width) - cx);
     const GLfloat y(GLfloat(i / capture_width) - cy);
-    const GLfloat dx(x / cx);
-    const GLfloat dy(y / cx);
+    const GLfloat dx(x / cy);
+    const GLfloat dy(y / cy);
     const GLfloat d2(dx * dx + dy * dy);
     const GLfloat d4(d2 * d2);
     const GLfloat t(k[0] + k[1] * d2 + k[2] * d4);
