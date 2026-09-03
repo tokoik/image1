@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <cstdlib>
 #include <opencv2/highgui/highgui.hpp>
 #ifdef _WIN32
@@ -8,8 +8,8 @@
 #  else
 #    define CV_EXT_STR ".lib"
 #  endif
-#  pragma comment(lib, "opencv_core" CV_VERSION_STR CV_EXT_STR)
-#  pragma comment(lib, "opencv_highgui" CV_VERSION_STR CV_EXT_STR)
+// #  pragma comment(lib, "opencv_core" CV_VERSION_STR CV_EXT_STR)
+// #  pragma comment(lib, "opencv_highgui" CV_VERSION_STR CV_EXT_STR)
 #endif
 
 // 補助プログラム
@@ -157,7 +157,7 @@ static void cleanup()
 int main()
 {
   // OpenCV によるビデオキャプチャを初期化する
-  cv::VideoCapture camera(CV_CAP_ANY);
+  cv::VideoCapture camera(cv::CAP_ANY);
   if (!camera.isOpened())
   {
     std::cerr << "cannot open input" << std::endl;
@@ -166,8 +166,8 @@ int main()
 
   // カメラの初期設定
   camera.grab();
-  const GLsizei capture_width(GLsizei(camera.get(CV_CAP_PROP_FRAME_WIDTH)));
-  const GLsizei capture_height(GLsizei(camera.get(CV_CAP_PROP_FRAME_HEIGHT)));
+  const GLsizei capture_width(GLsizei(camera.get(cv::CAP_PROP_FRAME_WIDTH)));
+  const GLsizei capture_height(GLsizei(camera.get(cv::CAP_PROP_FRAME_HEIGHT)));
 
   // GLFW を初期化する
   if (glfwInit() == GL_FALSE)
